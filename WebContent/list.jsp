@@ -24,7 +24,11 @@
 				<tr>
 					<td>${item.bId}</td>
 					<td>${item.bName}</td>
-					<td>${item.bTitle}</td>
+					<td>
+						<a href="contentView.do?id=${item.bId}">
+							${item.bTitle}
+						</a>
+					</td>
 					<td>${item.bContent}</td>
 					<td>${item.bDate}</td>
 				</tr>

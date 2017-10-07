@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.hwi.ex.command.BCommand;
+import com.hwi.ex.command.BContentCommand;
 import com.hwi.ex.command.BListCommand;
+import com.hwi.ex.command.BWriteCommand;
 
 /**
  * Servlet implementation class BFrontContrller
@@ -55,27 +57,36 @@ public class BFrontController extends HttpServlet {
 		String conPath = request.getContextPath();
 		String com = uri.substring(conPath.length());
 		
-		if (com.equals("/write_view.do")) {
+		System.out.println("" + com);
+		
+		if(com.equals("/write_view.do")){
 			viewPage = "write_view.jsp";
-		} else if (com.equals("/write.do")) {
-//			command = new BWriteCommand();
-//			command.execute(request,response);
-//			viewPage = "list.do";
-		} else if (com.equals("/list.do")) {
+		}else if(com.equals("/write.do")) { // logic
+			command = new BWriteCommand();
+			command.execute(request,response);
+			viewPage = "list.do";
+		}else if(com.equals("/list.do")){
 			command  = new BListCommand();
 			command.execute(request,response);
 			viewPage = "list.jsp";
 		} else if (com.equals("/index.do")) {
-//			System.out.println("======== index start");
-//			command  = new BListCommand();
-//			command.execute(request, response);
-//			viewPage = "index.jsp";
-		} else if (com.equals("/content_view.do")) {
-			
-		} else if (com.equals("/modify.do")) {
-			
+			System.out.println("======== index start");
+			command  = new BListCommand();
+			command.execute(request, response);
+			viewPage = "index.jsp";
+		}else if(com.equals("/contentView.do")){
+			command = new BContentCommand();
+			command.execute(request, response);
+			viewPage = "contentView.jsp";
+		}else if(com.equals("/modify.do")){
+//			command = new BModifyCommand();
+			command.execute(request, response);
+			viewPage = "list.do";
+		}else if(com.equals("/delete.do")){
+//			command = new BDeleteCommand();
+			command.execute(request, response);
+			viewPage = "list.do";
 		}
-		
 		RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);
 		dispatcher.forward(request, response);
 	}
