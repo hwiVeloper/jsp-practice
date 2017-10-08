@@ -75,8 +75,8 @@ public class BDao {
 			String query = "insert into board(bName,bTitle,bContent) values(?,?,?)";
 			
 			ps = connection.prepareStatement(query);
-			ps.setString(1,bName);
-			ps.setString(2,bTitle);
+			ps.setString(1,new String(bName.getBytes("8859_1"), "EUC-KR"));
+			ps.setString(2,bTitle); 
 			ps.setString(3,bContent);
 			
 			int rn = ps.executeUpdate();
@@ -84,9 +84,11 @@ public class BDao {
 				e.printStackTrace();
 		}finally{
 			try{
+				if(rs != null) rs.close();
+				if(ps != null) ps.close();
 				if(connection != null) connection.close();
-			}catch(Exception e2){
-				e2.printStackTrace();
+			}catch(Exception e){
+				e.printStackTrace();
 			}
 		}
 		
@@ -144,10 +146,11 @@ public class BDao {
 				e.printStackTrace();
 		}finally{
 			try{
-				/*if(PreparedStatement != null) PreparedStatement.close();*/
+				if(rs != null) rs.close();
+				if(ps != null) ps.close();
 				if(connection != null) connection.close();
-			}catch(Exception e2){
-				e2.printStackTrace();
+			}catch(Exception e){
+				e.printStackTrace();
 			}
 		}
 		
@@ -155,7 +158,6 @@ public class BDao {
 	
 	public void delete(String bid){
 		try{
-			//connection = dataSource.getConnection();
 			String query = "delete from board where bid= ?";
 			ps = connection.prepareStatement(query);
 			ps.setInt(1,Integer.parseInt(bid));
@@ -164,7 +166,6 @@ public class BDao {
 				e.printStackTrace();
 		}finally{
 			try{
-				/*if(PreparedStatement != null) PreparedStatement.close();*/
 				if(connection != null) connection.close();
 			}catch(Exception e2){
 				e2.printStackTrace();

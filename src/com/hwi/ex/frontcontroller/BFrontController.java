@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.hwi.ex.command.BCommand;
 import com.hwi.ex.command.BContentCommand;
+import com.hwi.ex.command.BDeleteCommand;
 import com.hwi.ex.command.BListCommand;
+import com.hwi.ex.command.BModifyCommand;
 import com.hwi.ex.command.BWriteCommand;
 
 /**
@@ -49,7 +51,7 @@ public class BFrontController extends HttpServlet {
 	
 	private void actionDo(HttpServletRequest request, HttpServletResponse response) throws ServletException ,IOException {
 		System.out.println("actionDo");
-		request.setCharacterEncoding("EUC-KR");
+		
 		String viewPage = null;
 		BCommand command = null;
 		
@@ -59,12 +61,14 @@ public class BFrontController extends HttpServlet {
 		
 		System.out.println("" + com);
 		
-		if(com.equals("/write_view.do")){
-			viewPage = "write_view.jsp";
+		if(com.equals("/writeView.do")){
+			viewPage = "writeView.jsp";
 		}else if(com.equals("/write.do")) { // logic
 			command = new BWriteCommand();
 			command.execute(request,response);
-			viewPage = "list.do";
+			response.sendRedirect("list.do");
+			
+			return;
 		}else if(com.equals("/list.do")){
 			command  = new BListCommand();
 			command.execute(request,response);
@@ -79,13 +83,15 @@ public class BFrontController extends HttpServlet {
 			command.execute(request, response);
 			viewPage = "contentView.jsp";
 		}else if(com.equals("/modify.do")){
-//			command = new BModifyCommand();
+			command = new BModifyCommand();
 			command.execute(request, response);
 			viewPage = "list.do";
 		}else if(com.equals("/delete.do")){
-//			command = new BDeleteCommand();
+			command = new BDeleteCommand();
 			command.execute(request, response);
 			viewPage = "list.do";
+		} else {
+			viewPage = "index.do";
 		}
 		RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);
 		dispatcher.forward(request, response);
